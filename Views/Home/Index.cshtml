@@ -1,0 +1,31 @@
+﻿@using A4_Task1MVC.Models
+@model List<Book>
+@{
+    ViewBag.Title = "Home Page";
+}
+<section class="main-content">
+    <div class="container">
+        <div class="row">
+            @foreach (var book in Model)
+            {
+                <div class="col-lg-4 .col-sm-6">
+                    <div class="book-card">
+                        <div class="book-details">
+                            <h3><a href="#">@book.title</a></h3>
+                            <p>Автор: @book.author</p>
+                            <p>Год издания: @book.year_published</p>
+                            <p>Количество страниц: @book.number_pages</p>
+                            <p>Оглавление: @book.contents</p>
+                        </div>
+                        <div class="book-bottom-details">
+                            <div class="book-links">
+                                <a href="/Home/DeleteBook/@book.id">Удалить</a>
+                                <a href="/Home/EditBook/@book.id">Изменить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

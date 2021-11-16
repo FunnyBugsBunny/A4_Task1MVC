@@ -1,0 +1,36 @@
+﻿@model A4_Task1MVC.Models.Book
+@{
+    ViewData["Title"] = "Book";
+    Html.EnableClientValidation(false);
+}
+<section class="main-container">
+    <h2>Добавить книгу</h2>
+    @using (Html.BeginRouteForm("Default", null, FormMethod.Post,
+        new { @class = "", data_formType = "book" }))
+    {
+        <div hidden>
+            @Html.TextBoxFor(book => book.id)
+        </div>
+        <div>
+            <label>Название:</label><br />
+            @Html.TextBoxFor(book => book.title)<br /><br />
+        </div>
+        <div>
+            <label>Автор:</label><br />
+            @Html.TextBoxFor(book => book.author)<br /><br />
+        </div>
+        <div>
+            <label>Год издания:</label><br />
+            @Html.TextBoxFor(book => book.year_published)<br /><br />
+        </div>
+        <div>
+            <label>Количество страниц:</label><br />
+            @Html.TextBoxFor(book => book.number_pages)<br /><br />
+        </div>
+        <div>
+            <label>Оглавление:</label><br />
+            @Html.EditorFor(book => book.contents)<br /><br />
+        </div>
+        <input type="submit" value="Добавить" />
+    }
+</section>

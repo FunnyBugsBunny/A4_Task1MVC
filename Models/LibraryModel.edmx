@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище LibraryModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Books">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="author" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="year_published" Type="smallint" Nullable="false" />
+          <Property Name="number_pages" Type="smallint" />
+          <Property Name="contents" Type="xml" />
+        </EntityType>
+        <Function Name="AddBook" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="title" Type="nchar" Mode="In" />
+          <Parameter Name="author" Type="nchar" Mode="In" />
+          <Parameter Name="year_published" Type="smallint" Mode="In" />
+          <Parameter Name="number_pages" Type="smallint" Mode="In" />
+          <Parameter Name="contents" Type="xml" Mode="In" />
+        </Function>
+        <Function Name="DeleteBook" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="SelOffCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="offset" Type="int" Mode="In" />
+          <Parameter Name="count" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateBook" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id" Type="smallint" Mode="In" />
+          <Parameter Name="title" Type="nchar" Mode="In" />
+          <Parameter Name="author" Type="nchar" Mode="In" />
+          <Parameter Name="year_published" Type="smallint" Mode="In" />
+          <Parameter Name="number_pager" Type="smallint" Mode="In" />
+          <Parameter Name="contents" Type="xml" Mode="In" />
+        </Function>
+        <EntityContainer Name="Хранилище LibraryModelContainer">
+          <EntitySet Name="Books" EntityType="Self.Books" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LibraryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int16" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="author" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="year_published" Type="Int16" Nullable="false" />
+          <Property Name="number_pages" Type="Int16" />
+          <Property Name="contents" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="LibraryModelContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Books" EntityType="Self.Book" />
+          <FunctionImport Name="AddBook">
+            <Parameter Name="title" Mode="In" Type="String" />
+            <Parameter Name="author" Mode="In" Type="String" />
+            <Parameter Name="year_published" Mode="In" Type="Int16" />
+            <Parameter Name="number_pages" Mode="In" Type="Int16" />
+            <Parameter Name="contents" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteBook">
+          <Parameter Name="id" Mode="In" Type="Int16" />
+          </FunctionImport>
+          <FunctionImport Name="SelOffCount" EntitySet="Books" ReturnType="Collection(LibraryModel.Book)">
+            <Parameter Name="offset" Mode="In" Type="Int32" />
+            <Parameter Name="count" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateBook">
+            <Parameter Name="id" Mode="In" Type="Int16" />
+            <Parameter Name="title" Mode="In" Type="String" />
+            <Parameter Name="author" Mode="In" Type="String" />
+            <Parameter Name="year_published" Mode="In" Type="Int16" />
+            <Parameter Name="number_pager" Mode="In" Type="Int16" />
+            <Parameter Name="contents" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SelOffCount_Result">
+          <Property Type="Int16" Name="id" Nullable="false" />
+          <Property Type="String" Name="title" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="author" Nullable="false" MaxLength="30" />
+          <Property Type="Int16" Name="year_published" Nullable="false" />
+          <Property Type="Int16" Name="number_pages" Nullable="true" />
+          <Property Type="String" Name="contents" Nullable="true" MaxLength="Max" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище LibraryModelContainer" CdmEntityContainer="LibraryModelContext">
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="LibraryModel.Book">
+              <MappingFragment StoreEntitySet="Books">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="year_published" ColumnName="year_published" />
+                <ScalarProperty Name="number_pages" ColumnName="number_pages" />
+                <ScalarProperty Name="contents" ColumnName="contents" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddBook" FunctionName="Хранилище LibraryModel.AddBook" />
+          <FunctionImportMapping FunctionImportName="DeleteBook" FunctionName="Хранилище LibraryModel.DeleteBook" />
+          <FunctionImportMapping FunctionImportName="SelOffCount" FunctionName="Хранилище LibraryModel.SelOffCount">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateBook" FunctionName="Хранилище LibraryModel.UpdateBook" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
